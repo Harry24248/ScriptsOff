@@ -10,7 +10,7 @@ public class ObjSpawn : MonoBehaviour
 {
     public GameObject game_obj;
 
-
+    public GameObject oggetti_pnl;
 
     public static int integer = 0;
 
@@ -42,6 +42,7 @@ public class ObjSpawn : MonoBehaviour
     const string obj_path_sub = "/obj";
     public void Spawn()
     {
+        oggetti_pnl.SetActive(false);
 
         BinaryFormatter bf = new BinaryFormatter();
 
@@ -90,12 +91,13 @@ public class ObjSpawn : MonoBehaviour
             FileStream Stream = new FileStream(path + integer, FileMode.Create);
             bf.Serialize(Stream, dato);
             Stream.Close();
-
+            oggetti_pnl.SetActive(true);
 
 
             conferma_btn.onClick.RemoveAllListeners();
             Debug.Log(integer);
             integer++;
+
         }
         );
 
@@ -136,6 +138,7 @@ public class ObjSpawn : MonoBehaviour
     }
     public void Rimuovi(GameObject game_obj)
     {
+        oggetti_pnl.SetActive(true);
         Destroy(game_obj);
         avanti_btn.onClick.RemoveAllListeners();
         destra_btn.onClick.RemoveAllListeners();
