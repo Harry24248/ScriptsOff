@@ -21,7 +21,10 @@ public class SaveSystem : MonoBehaviour
     const string folder1 = "/save1";
     const string folder2 = "/save2";
     const string folder3 = "/save3";
+    string folder;
     const string tempfolder = "/tempfolder";
+
+    public GameObject procedi_btn;
 
     public void Start()
     {
@@ -37,10 +40,19 @@ public class SaveSystem : MonoBehaviour
 
     }
 
-
-    public void SaveFileSlot1()
+    public void Controllo()
     {
-        string[] listafile = Directory.GetFiles(Application.persistentDataPath + folder1);
+        Debug.Log(Application.persistentDataPath + folder);
+        string[] listaFile = Directory.GetFiles(Application.persistentDataPath + folder);
+        if (listaFile.Length != 0)
+        {
+            procedi_btn.SetActive(true);
+        }
+        else { Procedi();}
+    }
+    public void Procedi()
+    {
+        string[] listafile=Directory.GetFiles(Application.persistentDataPath + folder);
         foreach (string file in listafile)
         {
             File.Delete(file);
@@ -48,98 +60,44 @@ public class SaveSystem : MonoBehaviour
 
         BinaryFormatter bf = new BinaryFormatter();
 
-        string path = Application.persistentDataPath + folder1 + obj_path_sub;
-        string countpath = Application.persistentDataPath + folder1 + obj_count_path_sub;
-        string stilepath = Application.persistentDataPath + folder1 + scene_stile;
+        string path= Application.persistentDataPath + folder + obj_path_sub;
+        string countpath = Application.persistentDataPath + folder + obj_count_path_sub;
+        string stilepath = Application.persistentDataPath + folder + scene_stile;
+        
 
 
-
-        FileStream countStream = new FileStream(countpath, FileMode.Create);
+        FileStream countStream = new FileStream(countpath, FileMode.Create );
         bf.Serialize(countStream, ObjSpawn.integer);
+        Debug.Log(ObjSpawn.integer);
+        
         countStream.Close();
-
         Scene currentScene = SceneManager.GetActiveScene();
+        
         FileStream stileStream = new FileStream(stilepath, FileMode.Create);
         bf.Serialize(stileStream, currentScene.buildIndex);
         stileStream.Close();
-
+        
 
         for (int i = 0; i < ObjSpawn.integer; i++)
         {
-            string tempPathFile = Application.persistentDataPath + tempfolder + obj_path_sub;
+            string tempPathFile= Application.persistentDataPath + tempfolder + obj_path_sub;
             File.Copy(tempPathFile + i, path + i, true);
         }
-        Debug.Log(path);
+    }
+    public void SaveFileSlot1 ()
+    {
+        folder = folder1;
+        Controllo();
     }
     public void SaveFileSlot2()
     {
-        string[] listafile = Directory.GetFiles(Application.persistentDataPath + folder2);
-        foreach (string file in listafile)
-        {
-            File.Delete(file);
-        }
-
-        BinaryFormatter bf = new BinaryFormatter();
-
-        string path = Application.persistentDataPath + folder2 + obj_path_sub;
-        string countpath = Application.persistentDataPath + folder2 + obj_count_path_sub;
-        string stilepath = Application.persistentDataPath + folder2 + scene_stile;
-
-
-
-        FileStream countStream = new FileStream(countpath, FileMode.Create);
-        bf.Serialize(countStream, ObjSpawn.integer);
-        Debug.Log(ObjSpawn.integer);
-
-        countStream.Close();
-        Scene currentScene = SceneManager.GetActiveScene();
-
-        FileStream stileStream = new FileStream(stilepath, FileMode.Create);
-        bf.Serialize(stileStream, currentScene.buildIndex);
-        stileStream.Close();
-
-
-        for (int i = 0; i < ObjSpawn.integer; i++)
-        {
-            string tempPathFile = Application.persistentDataPath + tempfolder + obj_path_sub;
-            File.Copy(tempPathFile + i, path + i, true);
-        }
-
+        folder = folder2;
+        Controllo();
     }
     public void SaveFileSlot3()
     {
-        string[] listafile = Directory.GetFiles(Application.persistentDataPath + folder3);
-        foreach (string file in listafile)
-        {
-            File.Delete(file);
-        }
-
-        BinaryFormatter bf = new BinaryFormatter();
-
-        string path = Application.persistentDataPath + folder3 + obj_path_sub;
-        string countpath = Application.persistentDataPath + folder3 + obj_count_path_sub;
-        string stilepath = Application.persistentDataPath + folder3 + scene_stile;
-
-
-
-        FileStream countStream = new FileStream(countpath, FileMode.Create);
-        bf.Serialize(countStream, ObjSpawn.integer);
-        Debug.Log(ObjSpawn.integer);
-
-        countStream.Close();
-        Scene currentScene = SceneManager.GetActiveScene();
-
-        FileStream stileStream = new FileStream(stilepath, FileMode.Create);
-        bf.Serialize(stileStream, currentScene.buildIndex);
-        stileStream.Close();
-
-
-        for (int i = 0; i < ObjSpawn.integer; i++)
-        {
-            string tempPathFile = Application.persistentDataPath + tempfolder + obj_path_sub;
-            File.Copy(tempPathFile + i, path + i, true);
-        }
-
+        folder = folder3;
+        Controllo();
     }
 
 
